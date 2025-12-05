@@ -17,8 +17,20 @@ connectDB();
 
 const app = express();
 
-// Middleware
-app.use(cors());
+// Middleware - CORS configurado para producción
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? [
+        'https://tikera.netlify.app',
+        'https://tiket-mdq.netlify.app',
+        /\.netlify\.app$/  // Permite todos los subdominios de Netlify
+      ]
+    : '*', // En desarrollo permite todo
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
